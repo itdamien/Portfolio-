@@ -1,0 +1,9 @@
+const header=document.querySelector('.site-header'),toggle=document.getElementById('menuToggle'),nav=document.getElementById('navLinks');
+toggle.addEventListener('click',()=>nav.classList.toggle('open'));
+document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',scrollY>20);let current='home';document.querySelectorAll('main section[id]').forEach(s=>{if(scrollY>=s.offsetTop-180)current=s.id});document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+current))});
+const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach((e,i)=>{e.style.transitionDelay=Math.min(i*30,200)+'ms';observer.observe(e)});
+document.querySelectorAll('.filters button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.filters button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.filter;document.querySelectorAll('.project').forEach(p=>p.classList.toggle('hidden',f!=='all'&&p.dataset.category!==f))}));
+document.getElementById('contactForm').addEventListener('submit',e=>{e.preventDefault();const d=new FormData(e.target),note=document.getElementById('formNote');const subject=encodeURIComponent('Portfolio inquiry from '+d.get('name'));const body=encodeURIComponent('Name: '+d.get('name')+'\nEmail: '+d.get('email')+'\n\n'+d.get('message'));window.location.href='mailto:your-email@example.com?subject='+subject+'&body='+body;note.textContent='Opening your email app. Replace your-email@example.com with your real email.'});
+document.getElementById('year').textContent=new Date().getFullYear();
